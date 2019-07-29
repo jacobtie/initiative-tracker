@@ -14,14 +14,16 @@ export default class AddCharacter extends Component<
   IAddCharacterProps,
   IAddCharacterState
 > {
-  constructor(props: any) {
+  constructor(props: IAddCharacterProps) {
     super(props);
 
     this.state = {
       character: {
+        id: 0,
         characterName: '',
         playerType: PlayerType.PC,
         initiativeMod: 0,
+        score: 0,
       },
     };
   }
@@ -57,16 +59,6 @@ export default class AddCharacter extends Component<
     return options;
   }
 
-  getStringFromPlayerType = (playerType: PlayerType): string => {
-    let retVal;
-    if (playerType === PlayerType.PC) {
-      retVal = 'PC';
-    } else {
-      retVal = 'NPC';
-    }
-    return retVal;
-  };
-
   handleChangeName(characterName: string): void {
     this.setState({ character: { ...this.state.character, characterName } });
   }
@@ -83,6 +75,7 @@ export default class AddCharacter extends Component<
     this.props.handleAddCharacter(this.state.character);
     this.setState({
       character: {
+        ...this.state.character,
         characterName: '',
         playerType: PlayerType.PC,
         initiativeMod: 0,
@@ -107,7 +100,7 @@ export default class AddCharacter extends Component<
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               this.handleChangeName(e.currentTarget.value)
             }
-            style={{ width: '50%' }}
+            style={{ width: '50%', padding: '8px' }}
           />
           <select
             value={this.state.character.playerType}
@@ -131,6 +124,7 @@ export default class AddCharacter extends Component<
           <button
             style={{ width: '30%' }}
             onClick={() => this.handleAddCharacter()}
+            disabled={this.state.character.characterName.length === 0}
           >
             Add Character
           </button>
