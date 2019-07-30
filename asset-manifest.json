@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/initiative-tracker/static/css/main.bc9aa30c.chunk.css",
+    "main.js": "/initiative-tracker/static/js/main.0e4787e5.chunk.js",
+    "main.js.map": "/initiative-tracker/static/js/main.0e4787e5.chunk.js.map",
+    "runtime~main.js": "/initiative-tracker/static/js/runtime~main.a0faf316.js",
+    "runtime~main.js.map": "/initiative-tracker/static/js/runtime~main.a0faf316.js.map",
+    "static/js/2.c7aed3e4.chunk.js": "/initiative-tracker/static/js/2.c7aed3e4.chunk.js",
+    "static/js/2.c7aed3e4.chunk.js.map": "/initiative-tracker/static/js/2.c7aed3e4.chunk.js.map",
+    "index.html": "/initiative-tracker/index.html",
+    "precache-manifest.958b120c91aa6fa34c0820ae3d55b629.js": "/initiative-tracker/precache-manifest.958b120c91aa6fa34c0820ae3d55b629.js",
+    "service-worker.js": "/initiative-tracker/service-worker.js",
+    "static/css/main.bc9aa30c.chunk.css.map": "/initiative-tracker/static/css/main.bc9aa30c.chunk.css.map",
+    "static/media/app.css": "/initiative-tracker/static/media/bg.488b494e.jpg"
+  }
+}
