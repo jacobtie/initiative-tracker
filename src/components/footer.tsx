@@ -1,8 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, CSSProperties } from 'react';
 import './bookends.css';
+import moment from 'moment';
 
 export default class Footer extends Component {
   render() {
-    return <footer className="bookend">&copy; Jacob Kedar Krevat</footer>;
+    const footerStyle: CSSProperties = {
+      fontSize: '15px'
+    };
+
+    return <footer style={footerStyle} className="bookend">&copy; Jacob Kedar Krevat {moment().year()}</footer>;
   }
 }

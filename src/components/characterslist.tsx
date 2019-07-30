@@ -6,6 +6,7 @@ interface ICharactersListProps {
   characters: Array<ICharacter>;
   setInitiative: (id: number, value: number) => void;
   removeCharacter: (id: number) => void;
+  turn: number;
 }
 
 interface ICharactersListState {}
@@ -31,6 +32,7 @@ export default class CharactersList extends Component<
               character={character}
               setInitiative={this.props.setInitiative}
               removeCharacter={this.props.removeCharacter}
+              turn={this.props.turn === index}
             />
           )
         )}

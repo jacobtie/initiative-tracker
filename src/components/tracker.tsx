@@ -3,11 +3,14 @@ import AddCharacter from './addcharacter';
 import ICharacter from '../types/character';
 import CharactersList from './characterslist';
 import PlayerType from '../types/playertype';
+import Controls from './controls';
 
 interface ITrackerProps {}
 
 interface ITrackerState {
   characters: Array<ICharacter>;
+  turn: number;
+  idCounter: number;
 }
 
 export default class Tracker extends Component<ITrackerProps, ITrackerState> {
@@ -16,10 +19,12 @@ export default class Tracker extends Component<ITrackerProps, ITrackerState> {
 
     this.state = {
       characters: [],
+      turn: 0,
+      idCounter: 0,
     };
   }
 
-  sortCharacters() {
+  sortCharacters(): void {
     const sortableCharacters = [...this.state.characters];
 
     sortableCharacters.sort(
@@ -53,46 +58,70 @@ export default class Tracker extends Component<ITrackerProps, ITrackerState> {
   }
 
   setInitiative(id: number, value: number): void {
-    this.setState(
-      {
-        characters: this.state.characters.map(character => {
-          let retVal;
-          if (character.id === id) {
-            retVal = {
-              ...character,
-              score: value,
-            };
-          } else {
-            retVal = character;
-          }
-          return retVal;
-        }),
-      },
-      () => this.sortCharacters()
-    );
+    this.setState({
+      characters: this.state.characters.map(character => {
+        let retVal;
+        if (character.id === id) {
+          retVal = {
+            ...character,
+            score: value,
+          };
+        } else {
+          retVal = character;
+        }
+        return retVal;
+      }),
+    });
   }
 
   removeCharacter(id: number): void {
-    this.setState(
-      {
-        characters: this.state.characters.filter(
-          character => character.id !== id
-        ),
-      },
-      () => this.sortCharacters()
-    );
+    let removedIndex = -1;
+    for (let i = 0; i < this.state.characters.length; i++) {
+      if (this.state.characters[i].id === id) {
+        removedIndex = i;
+        break;
+      }
+    }
+
+    let turn;
+    if (
+      removedIndex === this.state.turn &&
+      removedIndex === this.state.characters.length - 1
+    ) {
+      turn = 0;
+    } else if (removedIndex === turn) {
+      turn = this.state.turn;
+    } else if (removedIndex < this.state.turn) {
+      turn = this.state.turn - 1;
+    } else {
+      turn = this.state.turn;
+    }
+
+    this.setState({
+      characters: this.state.characters.filter(
+        character => character.id !== id
+      ),
+      turn: turn,
+    });
   }
 
-  handleAddCharacter(character: ICharacter): void {
-    this.setState(
-      {
-        characters: [
-          ...this.state.characters,
-          { ...character, id: this.state.characters.length },
-        ],
-      },
-      () => this.sortCharacters()
-    );
+  addCharacter(character: ICharacter): void {
+    this.setState({
+      characters: [
+        ...this.state.characters,
+        { ...character, id: this.state.idCounter },
+      ],
+      idCounter: this.state.idCounter + 1,
+    });
+  }
+
+  advanceTurn(): void {
+    this.setState({
+      turn:
+        this.state.turn >= this.state.characters.length - 1
+          ? 0
+          : this.state.turn + 1,
+    });
   }
 
   render() {
@@ -113,7 +142,7 @@ export default class Tracker extends Component<ITrackerProps, ITrackerState> {
       <div style={containerStyle}>
         <AddCharacter
           handleAddCharacter={(character: ICharacter) =>
-            this.handleAddCharacter(character)
+            this.addCharacter(character)
           }
         />
         <div style={contentStyle}>
@@ -121,7 +150,16 @@ export default class Tracker extends Component<ITrackerProps, ITrackerState> {
             characters={this.state.characters}
             setInitiative={(id, number) => this.setInitiative(id, number)}
             removeCharacter={id => this.removeCharacter(id)}
+            turn={this.state.turn}
           />
+          <div style={contentStyle}>
+            {this.state.characters.length > 0 && (
+              <Controls
+                sortCharacter={() => this.sortCharacters()}
+                handleNextTurnClick={() => this.advanceTurn()}
+              />
+            )}
+          </div>
         </div>
       </div>
     );
